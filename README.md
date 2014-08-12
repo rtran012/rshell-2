@@ -14,7 +14,7 @@ The command "dirs" will not work, it prints out "execvp failed".
 The command "hash" will not work either.
 The command "jobs" does not work.
 The command "shopt" does not work.
-The & does not work either.
+The "&" does not work either.
 Look in the tests file
 
 Other than these bugs, the rshell works like the regular terminal. 
