@@ -87,7 +87,7 @@ void forking(char** arguments) //forking function
 
 int main(int argc, char** argv)
 {
-	char buf[BUFSIZ];
+	//char buf[BUFSIZ];
 	char* arguments[100];
 
 	while(true) //loops the terminal so that you can enter different commands
@@ -97,8 +97,8 @@ int main(int argc, char** argv)
 		
 		if (gethostname(hostname, sizeof hostname) == 0) // the host
 		{
-			char* buff;	
-			buff = getlogin(); // the username of the person who logged in
+			char* buf;	
+			buf = getlogin(); // the username of the person who logged in
 
 			cout << getlogin() << "@" << (hostname) << " $ " << flush;
 			cin.getline(buf, BUFSIZ);
