@@ -1,4 +1,4 @@
- shell is a program that takes the user's input from the keyboard and lets the user control the operating system. The shell is a text only user interface for Linux and other Unix like operating systems. It is the most fundamental way for a user to interact with the computer. The shell executes the commands and display the output on the screen.
+A shell is a program that takes the user's input from the keyboard and lets the user control the operating system. The shell is a text only user interface for Linux and other Unix like operating systems. It is the most fundamental way for a user to interact with the computer. The shell executes the commands and display the output on the screen.
 
 In this program called "rshell", it reproduces the terminal in Linux. When "rshell" is compiled and ran, it will act as another terminal. Basically a terminal within a terminal. It has a command prompt with the currently logged in user and the hostname of the machine followed by a "$". From there the user types in a command, such as ls, clear, etc., then hit the enter/return key to execute the command. The command that had been executed will show up on the screen. Once the user is done, the user needs to type "exit" to exit the program.
 
@@ -14,7 +14,7 @@ The command "dirs" will not work, it prints out "execvp failed".
 The command "hash" will not work either.
 The command "jobs" does not work.
 The command "shopt" does not work.
-The -R does not work either.
+The & does not work either.
 Look in the tests file
 
 Other than these bugs, the rshell works like the regular terminal. 
