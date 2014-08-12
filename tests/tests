@@ -1,0 +1,226 @@
+ 
+kle016@well.cs.ucr.edu $ ls
+1.cpp                       Date Path.jpg    lab6.tgz     LICENSE
+3.cpp                       EE1B Lab 3.docx  lab7.tgz     rshell.cpp
+ANTH 001 Syllabus S14.docx  EE1B Lab 4.docx  lab8ex1.asm  Screenshot-1.png
+a.out                       enter.asm        lab8ex2.asm  Screenshot-2.png
+Assn1.tgz                   lab1.tgz         lab8ex3.asm  Screenshot-3.png
+Assn2.tgz                   lab2.tgz         lab8.tgz     Screenshot-4.png
+Assn7.asm                   lab3.tgz         lab9ex1.asm  Screenshot.png
+Assn8.asm                   lab4.tgz         lab9ex2.asm  Thesis.odt
+bs2.asm                     lab5.tgz         lab9ex3.asm  typescript
+bs.asm                      Lab 6.docx       lab9.tgz
+kle016@well.cs.ucr.edu $ vim rshell.cpp
+kle016@well.cs.ucr.edu $ cat rshell.cpp
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <iostream>
+#include <netdb.h>
+
+using namespace std;
+
+void parse_arguments(char* buf, char** arguments)
+{
+
+        int i;
+        for( i = 0; buf[i] != '\0'; i++)  //if it does not contain the '\0' aka NULL character. Checks each bit if it does not contain '\0'
+
+         {
+                if( buf[i] == ' ' || buf[i] == '\n' || buf[i] == '\t') // if it contains space, a new line (enter), or tab, it will put a '\0' in its place
+
+                {
+                        buf[i] = '\0';
+                }
+        }
+
+        //parses arguments into buf
+        int arg_iterator = 0;
+        arguments[arg_iterator] = buf;
+        buf++;
+        arg_iterator++;
+
+
+        for( int j = 1; j < i; j++ )
+        {
+                if( *buf == '\0' ) // if the last bit has the '\0', it goes through here
+
+                 {
+                        arguments[arg_iterator] = buf+1; // adds 1 to the length because the is added '\0' to the end of the string so it it will have 1 more lenght
+
+                        arg_iterator++;
+                }
+                buf++;
+        }
+
+        arguments[arg_iterator] = 0;
+}
+
+void forking(char** arguments) //forking function
+{
+
+        int PID = fork();
+        {
+                if (PID == -1)  //-1 is returned in the parent, no child process is created
+                {
+                        cerr << "Error creating a new process." << endl;
+                        exit(0);
+
+                }
+
+                if (PID == 0)  // the child, copy of the parents, makes a new process to excecute the inputed command
+
+                {
+                        if( execvp(arguments[0], arguments) == -1 ) // if the command that is not listed is entered, error will print out
+
+                        {
+                                cerr << "execvp failed" << endl; //could not find the command or the command does not exist
+
+                                exit(1);
+                        }
+                }
+
+                else
+                {
+                        wait(0);   //Parent waits for the child to finish
+
+                }
+        }
+
+
+
+
+}
+
+
+
+int main(int argc, char** argv)
+{
+        char buf[BUFSIZ];
+        char* arguments[100];
+
+        while(true) //loops the terminal so that you can enter different commands
+        {
+                char hostname[HOST_NAME_MAX];
+
+                if (gethostname(hostname, sizeof hostname) == 0) // the host
+                {
+                        char* buf;
+                        buf = getlogin(); // the username of the person who logged in
+
+                        cout << getlogin() << "@" << (hostname) << " $ " << flush;
+                        cin.getline(buf, BUFSIZ);
+
+
+                        if (strcmp(buf, "exit") == 0) //exits the program
+                        {
+                                return 0; //exits the program by returning 0
+                        }
+                        else
+
+                        parse_arguments(buf, arguments);
+                        forking(arguments);  //calls forking fuction
+
+
+
+                }
+                  else
+                         perror("gethostname");
+
+        }
+
+        return 0;
+}
+
+
+
+
+kle016@well.cs.ucr.edu $ mkdir blah
+kle016@well.cs.ucr.edu $ ls
+1.cpp                       bs.asm           Lab 6.docx   lab9.tgz
+3.cpp                       Date Path.jpg    lab6.tgz     LICENSE
+ANTH 001 Syllabus S14.docx  EE1B Lab 3.docx  lab7.tgz     rshell.cpp
+a.out                       EE1B Lab 4.docx  lab8ex1.asm  Screenshot-1.png
+Assn1.tgz                   enter.asm        lab8ex2.asm  Screenshot-2.png
+Assn2.tgz                   lab1.tgz         lab8ex3.asm  Screenshot-3.png
+Assn7.asm                   lab2.tgz         lab8.tgz     Screenshot-4.png
+Assn8.asm                   lab3.tgz         lab9ex1.asm  Screenshot.png
+blah                        lab4.tgz         lab9ex2.asm  Thesis.odt
+bs2.asm                     lab5.tgz         lab9ex3.asm  typescript
+kle016@well.cs.ucr.edu $ rmdir blah
+kle016@well.cs.ucr.edu $ ls
+1.cpp                       Date Path.jpg    lab6.tgz     LICENSE
+3.cpp                       EE1B Lab 3.docx  lab7.tgz     rshell.cpp
+ANTH 001 Syllabus S14.docx  EE1B Lab 4.docx  lab8ex1.asm  Screenshot-1.png
+a.out                       enter.asm        lab8ex2.asm  Screenshot-2.png
+Assn1.tgz                   lab1.tgz         lab8ex3.asm  Screenshot-3.png
+Assn2.tgz                   lab2.tgz         lab8.tgz     Screenshot-4.png
+Assn7.asm                   lab3.tgz         lab9ex1.asm  Screenshot.png
+Assn8.asm                   lab4.tgz         lab9ex2.asm  Thesis.odt
+bs2.asm                     lab5.tgz         lab9ex3.asm  typescript
+bs.asm                      Lab 6.docx       lab9.tgz
+kle016@well.cs.ucr.edu $ time
+Usage: time [-apvV] [-f format] [-o file] [--append] [--verbose]
+       [--portability] [--format=format] [--output=file] [--version]
+       [--help] command [arg...]
+kle016@well.cs.ucr.edu $ touch blah
+kle016@well.cs.ucr.edu $ ls
+1.cpp                       bs.asm           Lab 6.docx   lab9.tgz
+3.cpp                       Date Path.jpg    lab6.tgz     LICENSE
+ANTH 001 Syllabus S14.docx  EE1B Lab 3.docx  lab7.tgz     rshell.cpp
+a.out                       EE1B Lab 4.docx  lab8ex1.asm  Screenshot-1.png
+Assn1.tgz                   enter.asm        lab8ex2.asm  Screenshot-2.png
+Assn2.tgz                   lab1.tgz         lab8ex3.asm  Screenshot-3.png
+Assn7.asm                   lab2.tgz         lab8.tgz     Screenshot-4.png
+Assn8.asm                   lab3.tgz         lab9ex1.asm  Screenshot.png
+blah                        lab4.tgz         lab9ex2.asm  Thesis.odt
+bs2.asm                     lab5.tgz         lab9ex3.asm  typescript
+kle016@well.cs.ucr.edu $ rm blah
+kle016@well.cs.ucr.edu $ ls
+1.cpp                       Date Path.jpg    lab6.tgz     LICENSE
+3.cpp                       EE1B Lab 3.docx  lab7.tgz     rshell.cpp
+ANTH 001 Syllabus S14.docx  EE1B Lab 4.docx  lab8ex1.asm  Screenshot-1.png
+a.out                       enter.asm        lab8ex2.asm  Screenshot-2.png
+Assn1.tgz                   lab1.tgz         lab8ex3.asm  Screenshot-3.png
+Assn2.tgz                   lab2.tgz         lab8.tgz     Screenshot-4.png
+Assn7.asm                   lab3.tgz         lab9ex1.asm  Screenshot.png
+Assn8.asm                   lab4.tgz         lab9ex2.asm  Thesis.odt
+bs2.asm                     lab5.tgz         lab9ex3.asm  typescript
+bs.asm                      Lab 6.docx       lab9.tgz
+kle016@well.cs.ucr.edu $ top
+top - 12:30:40 up 21 days, 15:07, 37 users,  load average: 0.28, 0.20, 0.19
+Tasks: 1049 total,   1 running, 1044 sleeping,   4 stopped,   0 zombie
+Cpu(s):  1.0%us,  1.8%sy,  0.0%ni, 96.9%id,  0.0%wa,  0.0%hi,  0.3%si,  0.0%st
+Mem:  264285364k total, 13225784k used, 251059580k free,   573692k buffers
+Swap: 23438072k total,        0k used, 23438072k free, 10128804k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+25826 kle016    16   0 17664 2012  940 R 98.3  0.0   0:00.41 top
+25834 gupta     15   0 58288 2224 1628 S 24.6  0.0   0:00.10 sftp-server
+ 8696 kle016    15   0 97216  33m 4132 S 12.3  0.0   2:17.72 nxagent
+    1 root      15   0 10372  708  596 S  0.0  0.0   0:11.19 init
+    2 root      RT  -5     0    0    0 S  0.0  0.0   0:02.52 migration/0
+    3 root      34  19     0    0    0 S  0.0  0.0   0:00.10 ksoftirqd/0
+    4 root      RT  -5     0    0    0 S  0.0  0.0   0:00.00 watchdog/0
+    5 root      RT  -5     0    0    0 S  0.0  0.0   0:00.09 migration/1
+    6 root      34  19     0    0    0 S  0.0  0.0   0:00.00 ksoftirqd/1
+    7 root      RT  -5     0    0    0 S  0.0  0.0   0:00.00 watchdog/1
+    8 root      RT  -5     0    0    0 S  0.0  0.0   0:00.01 migration/2
+    9 root      34  19     0    0    0 S  0.0  0.0   0:00.00 ksoftirqd/2
+   10 root      RT  -5     0    0    0 S  0.0  0.0   0:00.00 watchdog/2
+   11 root      RT  -5     0    0    0 S  0.0  0.0   0:00.00 migration/3
+   12 root      34  19     0    0    0 S  0.0  0.0   0:00.00 ksoftirqd/3
+   13 root      RT  -5     0    0    0 S  0.0  0.0   0:00.00 watchdog/3
+   14 root      RT  -5     0    0    0 S  0.0  0.0   0:00.00 migration/4
+kle016@well.cs.ucr.edu $ pwd
+/home/csmajs/kle016/Desktop
+kle016@well.cs.ucr.edu $ script
+Script started, file is typescript
+kle016@well.cs.ucr.edu $ exit
+~/Desktop
+kle016@well $
