@@ -48,8 +48,8 @@ void print_file( char* path, struct stat& buf )
 	permissions(buf);
 	time_t now = buf.st_mtime;
 	tm * ptm = localtime(&now);
-	char buffer[30];
-	strftime(buffer, 30, "%b %d %H:%M:%S", ptm); 
+	char buffer[100];
+	strftime(buffer, 100, "%b %d %H:%M:%S", ptm); 
 
 	cout << '\t' << buf.st_nlink << '\t' 
 	<< buf.st_size << '\t'
