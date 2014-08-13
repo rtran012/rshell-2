@@ -181,15 +181,17 @@ if ( stat(path, &buf) != -1 )
 	} 
 	else 
 	{
-		cerr << "Error " << errno << " opening " << path << endl;
+		string tmp = ".";
+		print_default_dir(tmp,0);
+		
 	}
 	
 	} 
 	else 
 	{
+		cerr << "Error " << errno << " opening " << path << endl;
 	
-		string tmp = ".";
-		print_default_dir(tmp,0);
+
 	}
 
 return 0;
