@@ -173,13 +173,17 @@ int main(int argc, char** argv)
 	
 	if ( stat(path, &buf) != -1 ) 
 	{
-		if( S_ISREG(buf.st_mode) ) 
+	
+		if( S_ISDIR(buf.st_mode) )
 		{
-			print_file( path, buf );
-		} 
-		else if( S_ISDIR(buf.st_mode) ) 
-		{
+	
 			print_directory( path, 0 );
+		} 
+
+		else if( S_ISREG(buf.st_mode) )
+		{
+			
+			print_file( path, buf );
 		}
 	} 
 	else 
