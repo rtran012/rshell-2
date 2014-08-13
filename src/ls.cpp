@@ -57,7 +57,7 @@ void print_file( char* path, struct stat& buf )
 	<< path << endl; 
 }
 
-void print_directory( char* path, int width ) 
+void print_directory( char* path, int width ) 	// print all the files and directories within directory
 {
 
 	unsigned char isFile = 8;
@@ -67,7 +67,7 @@ void print_directory( char* path, int width )
 	
 	if ( (dir = opendir (path)) != NULL) {
 	
-	// print all the files and directories within directory
+
 	while ((entry = readdir (dir)) != NULL) {
 	
 	if( (entry -> d_name)[0] == '.') {
