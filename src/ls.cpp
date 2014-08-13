@@ -165,35 +165,36 @@ void print_default_dir( string path, int width )
 int main(int argc, char** argv) 
 {
 
-if (argc > 1) 
-{
-	char *path = argv[1];
-	struct stat buf;
-	cin.ignore();
-
-if ( stat(path, &buf) != -1 ) 
-{
-	if( S_ISREG(buf.st_mode) ) 
+	if (argc > 1) 
 	{
-		print_file( path, buf );
-	} 
-	else if( S_ISDIR(buf.st_mode) ) 
+		char *path = argv[1];
+		struct stat buf;
+		cin.ignore();
+	
+	if ( stat(path, &buf) != -1 ) 
 	{
-		print_directory( path, 0 );
-	}
+		if( S_ISREG(buf.st_mode) ) 
+		{
+			print_file( path, buf );
+		} 
+		else if( S_ISDIR(buf.st_mode) ) 
+		{
+			print_directory( path, 0 );
+		}
 	} 
 	else 
 	{
 		string tmp = ".";
 		print_default_dir(tmp,0);
-		
+			
 	}
-	
-	} 
+		
+		} 
 	else 
 	{
+
 		cerr << "Error " << errno << " opening " << path << endl;
-	
+		
 
 	}
 
