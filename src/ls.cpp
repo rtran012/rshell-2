@@ -111,8 +111,8 @@ closedir (dir);
 void print_default_dir( string path, int width )
 {
 
-	unsigned char isDir = 0x4;
-	unsigned char isFile = 0x8;
+	unsigned char isDir = 0x4;//4bits
+	unsigned char isFile = 0x8;//8bits
 	DIR* dir;
 	struct dirent* entry;
 	
