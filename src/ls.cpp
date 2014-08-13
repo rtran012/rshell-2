@@ -51,10 +51,7 @@ void print_file( char* path, struct stat& buf )
 	char buffer[100];
 	strftime(buffer, 100, "%b %d %H:%M:%S", ptm); 
 
-	cout << '\t' << buf.st_nlink << '\t' 
-	<< buf.st_size << '\t'
-	<< buffer << '\t'
-	<< path << endl; 
+	cout << '\t' << buf.st_nlink << '\t' << buf.st_size << '\t' << buffer << '\t' << path << endl; 
 }
 
 void print_directory( char* path, int width ) 	// print all the files and directories within directory
@@ -70,9 +67,10 @@ void print_directory( char* path, int width ) 	// print all the files and direct
 
 	while ((entry = readdir (dir)) != NULL) {
 	
-	if( (entry -> d_name)[0] == '.') {
+	if( (entry -> d_name)[0] == '.') 
+	{
 	continue;
-}
+	}
 
 for( int i = 0; i < width; i++ ) 
 {
