@@ -121,34 +121,41 @@ if ( (dir = opendir (path.c_str())) != NULL) {
 // print all the files and directories within directory
 while ((entry = readdir (dir)) != NULL) {
 
-if( (entry -> d_name)[0] == '.') {
-continue;
+if( (entry -> d_name)[0] == '.') 
+{
+	continue;
 }
 
-for( int i = 0; i < width; i++ ) {
-cout << "\t";
+for( int i = 0; i < width; i++ ) 
+{
+	cout << "\t";
 }
 
-if( entry -> d_type == isFile ) {
-cout << entry -> d_name << " ";	
-} else {
-cout << endl;
-cout << "./" << entry -> d_name << ":" << endl;
+if( entry -> d_type == isFile ) 
+{
+	cout << entry -> d_name << " ";	
+} 
+else 
+{
+	cout << endl;
+	cout << "./" << entry -> d_name << ":" << endl;
 }
-if( entry -> d_type == isDir ) {
-path += "/";
-path += entry -> d_name;
-print_default_dir( path, width + 1 );
+if( entry -> d_type == isDir ) 
+{
+	path += "/";
+	path += entry -> d_name;
+	print_default_dir( path, width + 1 );
 }
 
 }
 
 closedir (dir);
 
-} else {
-//could not open directory 
-cout << "Error: could not open directory." << endl;
-return;
+} else 
+{
+	//could not open directory 
+	cout << "Error: could not open directory." << endl;
+	return;
 }
 }
 
@@ -157,9 +164,9 @@ int main(int argc, char** argv)
 
 if (argc > 1) 
 {
-char *path = argv[1];
-struct stat buf;
-cin.ignore();
+	char *path = argv[1];
+	struct stat buf;
+	cin.ignore();
 
 if ( stat(path, &buf) != -1 ) 
 {
