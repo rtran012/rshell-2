@@ -19,36 +19,36 @@ using namespace std;
 void direction(char** argv)
 {
 
-for (int i=0; argv[i] != '\0';i++)
+	for (int i=0; argv[i] != '\0';i++)
 	{
-	int fd;
-	if(!strcmp(argv[i], ">"))
-	{
-	argv[i] = NULL;
-	if(-1== (fd = open(argv[i+1],O_CREAT | O_WRONLY | O_TRUNC )))
-	perror("There was an error with open. ");
-	if( -1 == dup2(fd,1))
-	perror("There was an error with dup2. ");
-	break;
-	}
-	else if(!strcmp(argv[i], ">>"))
-	{
-	argv[i] = NULL;
-	if(-1==(open(argv[i+1],O_CREAT | O_WRONLY | O_APPEND )))
-	perror("There was an error with open. ");
-	if(-1 == dup2(fd,1))
-	perror("There was an error with dup2. ");
-	break;
-	}
-	else if(!strcmp(argv[i], "<"))
-	{
-	argv[i] = NULL;
-	if(-1== (fd = open(argv[i+1],O_RDONLY )))
-	perror("There was an error with open. ");
-	if(-1 == dup2(fd,0))
-	perror("There was an error with dup2. ");
-	break;
-	}
+		int fd;
+		if(!strcmp(argv[i], ">"))
+		{
+			argv[i] = NULL;
+			if(-1== (fd = open(argv[i+1],O_CREAT | O_WRONLY | O_TRUNC )))
+			perror("There was an error with open. ");
+			if( -1 == dup2(fd,1))
+			perror("There was an error with dup2. ");
+			break;
+		}
+		else if(!strcmp(argv[i], ">>"))
+		{
+			argv[i] = NULL;
+			if(-1==(open(argv[i+1],O_CREAT | O_WRONLY | O_APPEND )))
+			perror("There was an error with open. ");
+			if(-1 == dup2(fd,1))
+			perror("There was an error with dup2. ");
+			break;
+		}
+		else if(!strcmp(argv[i], "<"))
+		{
+			argv[i] = NULL;
+			if(-1== (fd = open(argv[i+1],O_RDONLY )))
+			perror("There was an error with open. ");
+			if(-1 == dup2(fd,0))
+			perror("There was an error with dup2. ");
+			break;
+		}
 	}
 
 
