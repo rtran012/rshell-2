@@ -22,7 +22,18 @@ void direction(char** argv)
 	for (int i=0; argv[i] != '\0';i++)
 	{
 		int fd;
-		if(!strcmp(argv[i], ">"))
+		if(!strcmp(argv[i], "<"))
+		{
+			argv[i] = NULL;
+			
+			if(-1== (fd = open(argv[i+1],O_RDONLY )))
+			perror("Error with open: ");
+			if(-1 == dup2(fd,0))
+			perror("Error with dup2: ");
+			break;
+		}
+		
+		else if(!strcmp(argv[i], ">"))
 		{
 			argv[i] = NULL;
 			
@@ -42,16 +53,7 @@ void direction(char** argv)
 			perror("Error with dup2: ");
 			break;
 		}
-		else if(!strcmp(argv[i], "<"))
-		{
-			argv[i] = NULL;
-			
-			if(-1== (fd = open(argv[i+1],O_RDONLY )))
-			perror("Error with open: ");
-			if(-1 == dup2(fd,0))
-			perror("Error with dup2: ");
-			break;
-		}
+		
 	}
 
 
