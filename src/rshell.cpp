@@ -28,6 +28,7 @@ void direction(char** argv)
 			
 			if(-1== (fd = open(argv[i+1],O_RDONLY )))
 			perror("Error with open: ");
+			
 			if(-1 == dup2(fd,0))
 			perror("Error with dup2: ");
 			break;
@@ -39,6 +40,7 @@ void direction(char** argv)
 			
 			if(-1== (fd = open(argv[i+1],O_CREAT | O_WRONLY | O_TRUNC )))
 			perror("Error with open: ");
+			
 			if( -1 == dup2(fd,1))
 			perror("Error with dup2: ");
 			break;
@@ -49,6 +51,7 @@ void direction(char** argv)
 			
 			if(-1==(open(argv[i+1],O_CREAT | O_WRONLY | O_APPEND )))
 			perror("Error with open: ");
+			
 			if(-1 == dup2(fd,1))
 			perror("Error with dup2: ");
 			break;
