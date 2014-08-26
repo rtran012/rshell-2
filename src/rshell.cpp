@@ -11,11 +11,12 @@
 #include <iostream>
 #include <netdb.h>
 #include <string>
+#include <signal.h>
 
 
 using namespace std;
 
-
+/*
 void direction(char** argv)
 {
 
@@ -65,7 +66,7 @@ void direction(char** argv)
 
 
 }
-
+*/
 void parsing(char* buf, char** arguments)
 {
 
@@ -118,7 +119,7 @@ void forking(char** arguments) //forking function
 
 		{
 			
-			direction(argv);
+//			direction(argv);
 
 			if( execvp(arguments[0], arguments) == -1 ) // if the command that is not listed is entered, error will print out
 
@@ -141,18 +142,46 @@ void forking(char** arguments) //forking function
 
 }
 
+void ctrlc_sig(int sig)
+{
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+	{
+		perror("SIGINT Failed");
 
+	}
+
+
+}
+
+void path()
+{	
+
+		char path[1024];
+		if(!getcwd(path, sizeof(path)))
+		{
+			perror ("Error with getcwd");
+		}
+
+		else
+		{
+			cout << path << endl;
+
+		}
+}
 
 int main(int argc, char** argv)
 {
 	//char buf[BUFSIZ];
 	char* arguments[100];
 
+
+
 	while(true) //loops the terminal so that you can enter different commands
 	{
 		//char hostname[HOST_NAME_MAX];
 		char hostname[100];
-		
+		signal(SIGINT, ctrlc_sig);
+		path();
 		if (gethostname(hostname, sizeof hostname) == 0) // the host
 		{
 			char* buf;	
@@ -161,10 +190,46 @@ int main(int argc, char** argv)
 			cout << getlogin() << "@" << (hostname) << " $ " << flush;
 			cin.getline(buf, BUFSIZ);
 		
-			
+	
 			if (strcmp(buf, "exit") == 0) //exits the program
 			{
 				return 0; //exits the program by returning 0
+			}
+
+			else if (strcmp(buf, "cd") == 0)
+			{
+
+
+
+
+				char* home = getenv("HOME");
+				if (chdir(getenv("HOME")) == -1)
+				{
+					perror("Error");
+				}
+				/*
+				string home = getenv("HOME");
+				if(chdir(home.c_str()) == -1)
+				{
+					perror("Error2");
+				}
+				
+
+						
+				*/
+				if (chdir(argv[0]) == -1)
+				{
+					perror("Error of chdir");
+
+
+				}
+
+
+			
+	
+
+			continue;
+
 			}
 			else
 
