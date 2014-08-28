@@ -202,7 +202,7 @@ int main(int argc, char** argv)
 
 
 
-				char* home = getenv("HOME");
+				//char* home = getenv("HOME");
 				if (chdir(getenv("HOME")) == -1)
 				{
 					perror("Error");
