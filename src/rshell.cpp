@@ -120,8 +120,27 @@ void forking(char** arguments) //forking function
 		{
 			
 //			direction(argv);
+			/*if (strcmp(arguments[0], "cd") == 0)
+			{
 
-			if( execvp(arguments[0], arguments) == -1 ) // if the command that is not listed is entered, error will print out
+
+				//char* home = getenv("HOME");
+				//if(home == NULL)	
+				if (chdir(getenv("HOME")) == -1)
+				{
+					perror("Error");
+					exit(1);
+				}
+
+				if (chdir(arguments[1] == -1))
+				{
+					perror("Error2");
+					exit(1);
+
+				}
+			}
+
+			else*/ if( execvp(arguments[0], arguments) == -1 ) // if the command that is not listed is entered, error will print out
 
 			{
 				cerr << "execvp failed" << endl; //could not find the command or the command does not exist
@@ -169,13 +188,30 @@ void path()
 		}
 }
 
+void cd(char** arguments)
+{
+
+	if (chdir(arguments[1]) == -1)
+	{
+		perror("Error");
+
+
+	}
+
+return;
+
+}
+
+
+
+
 int main(int argc, char** argv)
 {
 	//char buf[BUFSIZ];
 	char* arguments[100];
 
 
-
+begin:
 	while(true) //loops the terminal so that you can enter different commands
 	{
 		//char hostname[HOST_NAME_MAX];
@@ -188,48 +224,50 @@ int main(int argc, char** argv)
 			buf = getlogin(); // the username of the person who logged in
 
 			cout << getlogin() << "@" << (hostname) << " $ " << flush;
-			cin.getline(buf, BUFSIZ);
+			cin.getline(buf, 1024);
 		
 	
 			if (strcmp(buf, "exit") == 0) //exits the program
 			{
 				return 0; //exits the program by returning 0
 			}
+	
 
-			else if (strcmp(buf, "cd") == 0)
+	
+			if (strcmp(buf, "cd") == 0)
 			{
 
 
-
-
 				//char* home = getenv("HOME");
+				//if(home == NULL)	
 				if (chdir(getenv("HOME")) == -1)
 				{
 					perror("Error");
 				}
-				/*
-				string home = getenv("HOME");
-				if(chdir(home.c_str()) == -1)
+
+/*			
+				else
 				{
-					perror("Error2");
+				//if(chdir(home) == -1)
+				if (chdir(arguments[1]) == -1)
+				{
+					perror("2Error of chdir");
+
+
 				}
+				}
+
+*/				
 				
-
-						
-				*/
-				if (chdir(argv[0]) == -1)
-				{
-					perror("Error of chdir");
-
-
-				}
-
-
 			
-	
+			else
+			{
+				cd(arguments);
+			
+			}	
 
-			continue;
 
+			goto begin;
 			}
 			else
 
@@ -246,8 +284,6 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-
-
 
 
 
