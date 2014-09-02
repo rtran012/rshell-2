@@ -105,12 +105,12 @@ void parsing(char* buf, char** arguments)
 
 void forking(char** arguments) //forking function
 {
-
 	int PID = fork();
 	{
 		if (PID == -1)  //-1 is returned in the parent, no child process is created
 		{
-			cerr << "Error creating a new process." << endl;
+			perror("Error creating new process");
+			//cerr << "Error creating a new process." << endl;
 			exit(0);
 
 		}
@@ -120,30 +120,10 @@ void forking(char** arguments) //forking function
 		{
 			
 //			direction(argv);
-			/*if (strcmp(arguments[0], "cd") == 0)
-			{
-
-
-				//char* home = getenv("HOME");
-				//if(home == NULL)	
-				if (chdir(getenv("HOME")) == -1)
-				{
-					perror("Error");
-					exit(1);
-				}
-
-				if (chdir(arguments[1] == -1))
-				{
-					perror("Error2");
-					exit(1);
-
-				}
-			}
-
-			else*/ if( execvp(arguments[0], arguments) == -1 ) // if the command that is not listed is entered, error will print out
+		 if( execvp(arguments[0], arguments) == -1 ) // if the command that is not listed is entered, error will print out
 
 			{
-				cerr << "execvp failed" << endl; //could not find the command or the command does not exist
+				perror("execvp failed"); //could not find the command or the command does not exist
 
 				exit(1);
 			}
@@ -176,7 +156,7 @@ void path()
 {	
 
 		char path[1024];
-		if(!getcwd(path, sizeof(path)))
+		if(getcwd(path, sizeof(path)) == 0)
 		{
 			perror ("Error with getcwd");
 		}
@@ -187,22 +167,35 @@ void path()
 
 		}
 }
-
-void cd(char** arguments)
+/*
+void cd(char** userinput)
 {
-
-	if (chdir(arguments[1]) == -1)
+	if(userinput[1] == NULL)
 	{
-		perror("Error");
-
-
+		int num = chdir(getenv("HOME"));
+		
+		if (num == -1)
+		{
+			perror("chdir error");
+		}
+		return;
+	
 	}
 
-return;
+	else
+	{
 
+		int num = chdir(userinput[1]);
+		
+		if (num == -1)
+		{
+			perror("error with cd");
+		}
+		return;
+	}
 }
 
-
+*/
 
 
 int main(int argc, char** argv)
@@ -215,58 +208,38 @@ begin:
 	while(true) //loops the terminal so that you can enter different commands
 	{
 		//char hostname[HOST_NAME_MAX];
-		char hostname[100];
+		char hostname[128];
 		signal(SIGINT, ctrlc_sig);
 		path();
-		if (gethostname(hostname, sizeof hostname) == 0) // the host
+		if (gethostname(hostname, sizeof hostname) == -1) // the host
+		{
+			perror("gethostname failed");
+		}
+		else
 		{
 			char* buf;	
 			buf = getlogin(); // the username of the person who logged in
-
+			
 			cout << getlogin() << "@" << (hostname) << " $ " << flush;
 			cin.getline(buf, 1024);
-		
-	
+
+
 			if (strcmp(buf, "exit") == 0) //exits the program
 			{
 				return 0; //exits the program by returning 0
 			}
 	
-
-	
+//			char** change;
+//			change = new char* [50];
+				
 			if (strcmp(buf, "cd") == 0)
 			{
-
-
-				//char* home = getenv("HOME");
-				//if(home == NULL)	
+				//cd(buf);
 				if (chdir(getenv("HOME")) == -1)
 				{
 					perror("Error");
 				}
-
-/*			
-				else
-				{
-				//if(chdir(home) == -1)
-				if (chdir(arguments[1]) == -1)
-				{
-					perror("2Error of chdir");
-
-
-				}
-				}
-
-*/				
 				
-			
-			else
-			{
-				cd(arguments);
-			
-			}	
-
-
 			goto begin;
 			}
 			else
@@ -277,8 +250,6 @@ begin:
 
 
 		}
-  		  else
-       			 perror("gethostname");
 
 	}
 
