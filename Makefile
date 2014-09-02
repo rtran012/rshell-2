@@ -1,5 +1,5 @@
 
-all: rshell ls
+all: rshell 
 
 bin:
 	[ ! -d $bin ] && mkdir bin
