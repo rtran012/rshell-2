@@ -1,4 +1,3 @@
-#include <fcntl.h>
 
 #include <stdio.h>
 #include <unistd.h>
@@ -10,63 +9,9 @@
 #include <sys/wait.h>
 #include <iostream>
 #include <netdb.h>
-#include <string>
-#include <signal.h>
-
 
 using namespace std;
 
-/*
-void direction(char** argv)
-{
-
-	for (int i=0; argv[i] != '\0';i++)
-	{
-		int fd;
-		if(!strcmp(argv[i], "<"))
-		{
-			argv[i] = NULL;
-			
-			if(-1== (fd = open(argv[i+1],O_RDONLY )))
-			perror("Error with open: ");
-			
-			if(-1 == dup2(fd,0))
-			perror("Error with dup2: ");
-			break;
-		}
-		
-		else if(!strcmp(argv[i], ">"))
-		{
-			argv[i] = NULL;
-			
-			if(-1== (fd = open(argv[i+1],O_CREAT | O_WRONLY | O_TRUNC )))
-			perror("Error with open: ");
-			
-			if( -1 == dup2(fd,1))
-			perror("Error with dup2: ");
-			break;
-		}
-		else if(!strcmp(argv[i], ">>"))
-		{
-			argv[i] = NULL;
-			
-			if(-1==(open(argv[i+1],O_CREAT | O_WRONLY | O_APPEND )))
-			perror("Error with open: ");
-			
-			if(-1 == dup2(fd,1))
-			perror("Error with dup2: ");
-			break;
-		}
-		
-	}
-
-
-
-
-
-
-}
-*/
 void parsing(char* buf, char** arguments)
 {
 
@@ -105,25 +50,22 @@ void parsing(char* buf, char** arguments)
 
 void forking(char** arguments) //forking function
 {
+
 	int PID = fork();
 	{
 		if (PID == -1)  //-1 is returned in the parent, no child process is created
 		{
 			perror("Error creating new process");
-			//cerr << "Error creating a new process." << endl;
-			exit(0);
 
 		}
 
 		if (PID == 0)  // the child, copy of the parents, makes a new process to excecute the inputed command
 
 		{
-			
-//			direction(argv);
-		 if( execvp(arguments[0], arguments) == -1 ) // if the command that is not listed is entered, error will print out
+			if( execvp(arguments[0], arguments) == -1 ) // if the command that is not listed is entered, error will print out
 
 			{
-				perror("execvp failed"); //could not find the command or the command does not exist
+				perror ("Error in execvp"); 
 
 				exit(1);
 			}
@@ -131,7 +73,13 @@ void forking(char** arguments) //forking function
 	
 		else
 		{
-			wait(0);   //Parent waits for the child to finish
+			int waiting = 0;	
+			if(wait(&waiting) == -1)
+			{
+		
+				perror ("Wait had an Error");
+
+			}
 		
 		}
 	}
@@ -140,62 +88,6 @@ void forking(char** arguments) //forking function
 
 
 }
-
-void ctrlc_sig(int sig)
-{
-	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
-	{
-		perror("SIGINT Failed");
-
-	}
-
-
-}
-
-void path()
-{	
-
-		char path[1024];
-		if(getcwd(path, sizeof(path)) == 0)
-		{
-			perror ("Error with getcwd");
-		}
-
-		else
-		{
-			cout << path << endl;
-
-		}
-}
-/*
-void cd(char** userinput)
-{
-	if(userinput[1] == NULL)
-	{
-		int num = chdir(getenv("HOME"));
-		
-		if (num == -1)
-		{
-			perror("chdir error");
-		}
-		return;
-	
-	}
-
-	else
-	{
-
-		int num = chdir(userinput[1]);
-		
-		if (num == -1)
-		{
-			perror("error with cd");
-		}
-		return;
-	}
-}
-
-*/
 
 
 int main(int argc, char** argv)
@@ -203,14 +95,12 @@ int main(int argc, char** argv)
 	//char buf[BUFSIZ];
 	char* arguments[100];
 
+	char buf[1024] = {0};
 
-begin:
 	while(true) //loops the terminal so that you can enter different commands
 	{
 		//char hostname[HOST_NAME_MAX];
 		char hostname[128];
-		signal(SIGINT, ctrlc_sig);
-		path();
 		if (gethostname(hostname, sizeof hostname) == -1) // the host
 		{
 			perror("gethostname failed");
@@ -224,23 +114,30 @@ begin:
 			cin.getline(buf, 1024);
 
 
+			for(int i = 0; i < 1024; i++)
+			{
+				if (buf[i] == '#')
+				{
+					buf[i] = '\0';
+				}
+
+
+			}
+
+
 			if (strcmp(buf, "exit") == 0) //exits the program
 			{
 				return 0; //exits the program by returning 0
 			}
 	
-//			char** change;
-//			change = new char* [50];
 				
 			if (strcmp(buf, "cd") == 0)
 			{
-				//cd(buf);
 				if (chdir(getenv("HOME")) == -1)
 				{
 					perror("Error");
 				}
 				
-			goto begin;
 			}
 			else
 
@@ -255,6 +152,4 @@ begin:
 
 	return 0;
 }
-
-
 
