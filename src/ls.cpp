@@ -821,9 +821,8 @@ int main(int argc, char *argv[])
 
         }
 
-        //this is if there is something in the input that isn't any of the flags. this means it is either a file/directory
 
-        else //or invalid input
+        else 
 
         {
 
