@@ -20,4 +20,4 @@ Look in the tests file
 Other than these bugs, the rshell works like the regular terminal. 
 Commands such as: ls (-a, -l, -la, -al, -l -a, -a -l), vim, cat, rm, mkdir, rmdir, time, touch, top, exit, pwd, script, etc. will all work.
 
-The ls program only runs ls. It doesn't ask for input. There are code for the other parts but I messed up in the main. There are code for the a, l, and R. It also compiles.
+The ls program only works with the flags -l, -a, and -R. It will not work with other combinations. To use the flags, the user has to type in bin/ls (flag).  For example, bin/ls -a is equivalent to ls -a. 
