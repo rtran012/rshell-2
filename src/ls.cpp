@@ -254,11 +254,7 @@ int noflag(string dirName)
 
     }
 
-    
-
     cout << endl;
-
-    
 
     if((closedir(dirp)) == -1)
 
@@ -268,13 +264,10 @@ int noflag(string dirName)
 
     }
 
-    
-
     return 0;
 
 }
 
-    
 
 int aflag(string dirName) 
 
@@ -288,19 +281,8 @@ int aflag(string dirName)
 
     }
 
-    
-
-    
-
     DIR *dirp;
-
-    
-
     dirent *direntp;
-
-    
-
-
 
     if(!(dirp = opendir(dirName.c_str())))
 
@@ -309,9 +291,6 @@ int aflag(string dirName)
         perror("opendir: ");
 
     }
-
-    
-
     while ((direntp = readdir(dirp)))
 
     {
@@ -324,21 +303,12 @@ int aflag(string dirName)
 
         }
 
-        
-
         struct stat buf;
-
-        
-
         char filepath[1024];
 
         strcpy(filepath, dirName.c_str());
-
         strcat(filepath, "/");
-
         strcat(filepath, direntp->d_name);
-
-
 
         if((stat(filepath , &buf)) == -1)
 
@@ -348,8 +318,7 @@ int aflag(string dirName)
 
         }
 
-        
-
+       	output(buf, direntp);
 
 
     }
@@ -358,26 +327,15 @@ int aflag(string dirName)
 
     cout << endl;
 
-    
-
     if((closedir(dirp)) == -1)
 
     {
-
         perror("closedir: ");
-
     }
-
-
 
     return 0;
 
 }
-
-
-
-
-
 
 int lflag(string dirName)
 
@@ -391,21 +349,8 @@ int lflag(string dirName)
 
     }
 
-    
-
-    
-
     DIR *dirp;
-
-    
-
     dirent *direntp;
-
-    
-
-
-
-
 
     if(!(dirp = opendir(dirName.c_str())))
 
@@ -414,8 +359,6 @@ int lflag(string dirName)
         perror("opendir: ");
 
     }
-
-    
 
     while ((direntp = readdir(dirp)))
 
@@ -521,21 +464,11 @@ int lflag(string dirName)
         cout << groupid << " ";   
 
             
-
-
         size = buf.st_size;
 
         cout << size << " ";
 
-           
-
-
         printtime(buf); 
-
-
-
-
-
         cout << endl;
 
     }
@@ -543,8 +476,6 @@ int lflag(string dirName)
     
 
     cout << endl;
-
-    
 
     if((closedir(dirp)) == -1)
 
@@ -581,10 +512,7 @@ int rflag(string dirName)
     
 
     DIR *dirp;
-
     dirent *direntp;
-
-
 
     if(!(dirp = opendir(dirName.c_str())))
 
@@ -595,8 +523,6 @@ int rflag(string dirName)
     }
 
  
-
-       
 
     if(strcmp(dirName.c_str(), ".") == 0)
 
@@ -616,8 +542,6 @@ int rflag(string dirName)
 
     }
 
-    
-
     while ((direntp = readdir(dirp)))
 
     {
@@ -625,23 +549,16 @@ int rflag(string dirName)
         if(errno != 0)
 
         {
-
             perror("readdir");
-
         } 
 
         
 
         struct stat buf;
-
-
-
         char filepath[1024];
 
         strcpy(filepath, dirName.c_str());
-
         strcat(filepath, "/");
-
         strcat(filepath, direntp->d_name);
 
 
@@ -649,9 +566,7 @@ int rflag(string dirName)
         if((stat(filepath , &buf)) == -1)
 
         {
-
             perror("stat: ");
-
         }
 
 
@@ -664,25 +579,20 @@ int rflag(string dirName)
 
         }
 
-
-
-        
-
+	output(buf, direntp);
         if(S_ISDIR(buf.st_mode))
 
         {
 
 		    direc.push_back(direntp->d_name); 
 
-	    }
+	 }
 
 
 
     }
 
-    cout << endl;
-
-    cout << endl;
+    cout << endl << endl;
 
  
 
