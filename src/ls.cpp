@@ -20,7 +20,38 @@ using namespace std;
 
 
 
+void output(struct stat buf, dirent *direntp) 
+{
+    if(buf.st_mode & S_IXUSR)
+    {
+        cout<< direntp->d_name << " ";
+    }   
 
+    else if(buf.st_mode & S_IFDIR)
+    {
+        cout<< direntp->d_name << " ";
+    }
+
+    else if(direntp->d_name[0] == '.') 
+    {
+        cout<< direntp->d_name << " ";
+    }   
+
+    else if(direntp->d_name[0] == '.' && (buf.st_mode & S_IFDIR)) 
+    {
+        cout<< direntp->d_name << " ";
+    }
+
+    else if(direntp->d_name[0] == '.' && (buf.st_mode & S_IXUSR)) 
+    {
+        cout<< direntp->d_name << " ";
+    }
+    
+    else
+    {
+        cout<<direntp->d_name << " ";
+    }   
+}
 
 void printtime(const struct stat &buf)
 
@@ -218,7 +249,7 @@ int noflag(string dirName)
         }
 
 
-
+	output(buf, direntp);
 
 
     }
@@ -992,35 +1023,4 @@ int main(int argc, char *argv[])
 
 
 }
-void output(struct stat buf, dirent *direntp) 
-{
-    if(buf.st_mode & S_IXUSR)
-    {
-        cout<< direntp->d_name << " ";
-    }   
 
-    else if(buf.st_mode & S_IFDIR)
-    {
-        cout<< direntp->d_name << " ";
-    }
-
-    else if(direntp->d_name[0] == '.') 
-    {
-        cout<< direntp->d_name << " ";
-    }   
-
-    else if(direntp->d_name[0] == '.' && (buf.st_mode & S_IFDIR)) 
-    {
-        cout<< direntp->d_name << " ";
-    }
-
-    else if(direntp->d_name[0] == '.' && (buf.st_mode & S_IXUSR)) //hidden executable (gray background, green words)
-    {
-        cout<< direntp->d_name << " ";
-    }
-    
-    else //none of the above cases, cout as normal
-    {
-        cout<<direntp->d_name << " ";
-    }   
-}
