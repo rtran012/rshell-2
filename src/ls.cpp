@@ -821,7 +821,7 @@ int main(int argc, char *argv[])
 
 
 
-    if(lflags && !aflags && !rflags)
+    if(lflags)
 
     {
 
@@ -860,7 +860,7 @@ int main(int argc, char *argv[])
 
 
 
-    if(rflags && !aflags && !lflags)
+    if(rflags)
 
     {
 
@@ -897,7 +897,7 @@ int main(int argc, char *argv[])
 
 
 
-    if(aflags && !lflags && !rflags)
+    if(aflags)
 
     {
 
