@@ -32,7 +32,7 @@ void printtime(const struct stat &buf)
 
     char buffer[BUFSIZ]; 
 
-
+    strftime(buffer, BUFSIZ, "%b %d %R", tminfo);
 
     cout << buffer << " "; 
 
@@ -972,7 +972,7 @@ int main(int argc, char *argv[])
 
                 aflag(in.at(i));
 
-                cout << endl;
+         cout << endl;
 
             }
 
@@ -984,11 +984,43 @@ int main(int argc, char *argv[])
 
         {
 
-            aflag(cinput);
+         aflag(cinput);
 
         }
 
     }
 
 
+}
+void output(struct stat buf, dirent *direntp) 
+{
+    if(buf.st_mode & S_IXUSR)
+    {
+        cout<< direntp->d_name << " ";
+    }   
+
+    else if(buf.st_mode & S_IFDIR)
+    {
+        cout<< direntp->d_name << " ";
+    }
+
+    else if(direntp->d_name[0] == '.') 
+    {
+        cout<< direntp->d_name << " ";
+    }   
+
+    else if(direntp->d_name[0] == '.' && (buf.st_mode & S_IFDIR)) 
+    {
+        cout<< direntp->d_name << " ";
+    }
+
+    else if(direntp->d_name[0] == '.' && (buf.st_mode & S_IXUSR)) //hidden executable (gray background, green words)
+    {
+        cout<< direntp->d_name << " ";
+    }
+    
+    else //none of the above cases, cout as normal
+    {
+        cout<<direntp->d_name << " ";
+    }   
 }
