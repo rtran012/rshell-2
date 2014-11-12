@@ -44,7 +44,7 @@ void printtime(const struct stat &buf) //prints the time
 
 
 
-void printall(const struct stat &buf) //prints the mode, then prints read, write, execute permissions
+void printall(const struct stat &buf) 
 
 {
 
@@ -144,11 +144,11 @@ void printall(const struct stat &buf) //prints the mode, then prints read, write
 }
 
 
-int noflag(string dirName) //this function is for when the user inputs no flags
+int noflag(string dirName) 
 
 {
 
-    if((strcmp(dirName.c_str(), "")) == 0) //if user did not specify a file/directory
+    if((strcmp(dirName.c_str(), "")) == 0)
 
     {
 
@@ -164,9 +164,7 @@ int noflag(string dirName) //this function is for when the user inputs no flags
 
     
 
-
-
-    if(!(dirp = opendir(dirName.c_str()))) //opendir and error checking
+    if(!(dirp = opendir(dirName.c_str()))) 
 
     {
 
@@ -192,7 +190,6 @@ int noflag(string dirName) //this function is for when the user inputs no flags
 
         struct stat buf;
 
-        //modify the directory name so that it's usable, append on the necessary parts
 
         char filepath[1024];
 
@@ -204,7 +201,7 @@ int noflag(string dirName) //this function is for when the user inputs no flags
 
 
 
-        if((stat(filepath , &buf)) == -1) //stat function & error checking
+        if((stat(filepath , &buf)) == -1) 
 
         {
 
@@ -224,11 +221,7 @@ int noflag(string dirName) //this function is for when the user inputs no flags
 
 
 
-        //filename
 
-        //cout << direntp->d_name << " ";
-
-        //output(buf, direntp);
 
     }
 
@@ -254,7 +247,7 @@ int noflag(string dirName) //this function is for when the user inputs no flags
 
     
 
-int aflag(string dirName) //this function is for when the user inputs ONLY the -a flag
+int aflag(string dirName) 
 
 { 
 
@@ -329,7 +322,6 @@ int aflag(string dirName) //this function is for when the user inputs ONLY the -
         
 
 
-    //note there is no continue here, as we want the . files
 
     }
 
@@ -357,7 +349,6 @@ int aflag(string dirName) //this function is for when the user inputs ONLY the -
 
 
 
-// for just the l-flag
 
 int lflag(string dirName)
 
@@ -433,13 +424,13 @@ int lflag(string dirName)
 
         
 
-        struct passwd *pwd; //used later to get user id
+        struct passwd *pwd; 
 
         string userid;
 
 
 
-        struct group *gid; //used later to get group id
+        struct group *gid; 
 
         string groupid;
 
@@ -459,17 +450,11 @@ int lflag(string dirName)
 
         
 
-        //have to print out extra info for the -l flag
-
-
-
-        //prints mode and file permissions
 
         printall(buf); 
 
             
 
-        //number of links
 
         cout << buf.st_nlink << " ";
 
@@ -491,7 +476,6 @@ int lflag(string dirName)
 
             
 
-        //gid
 
         if(!(gid = getgrgid(buf.st_gid)))
 
@@ -509,7 +493,6 @@ int lflag(string dirName)
 
             
 
-        //size in bytes
 
         size = buf.st_size;
 
@@ -517,7 +500,6 @@ int lflag(string dirName)
 
            
 
-        //month, date, time
 
         printtime(buf); 
 
@@ -551,13 +533,13 @@ int lflag(string dirName)
 
 
 
-int rflag(string dirName) //this is for recursion, where the user inputs -R
+int rflag(string dirName) 
 
 {
 
 
 
-    vector<char*> direc; //vector that will store directory names for recursion	
+    vector<char*> direc; 
 
     if((strcmp(dirName.c_str(), "")) == 0)
 
@@ -675,15 +657,14 @@ int rflag(string dirName) //this is for recursion, where the user inputs -R
 
  
 
-    //this is the recursive portion
 
     int dsize = direc.size();
 
-    for(int d = 0; d < dsize; d++) //for each directory in the vectory, call rflag again
+    for(int d = 0; d < dsize; d++)
 
     { 
 
-        rflag(dirName+"/"+ direc.at(d)); //append the necessary parts so that it can be called
+        rflag(dirName+"/"+ direc.at(d)); 
 
     }
 
@@ -712,19 +693,19 @@ int main(int argc, char *argv[])
 
 {
 
-    vector <char*> v; //this will contain everything the user inputs
+    vector <char*> v;
 
     bool lflags = false, aflags = false, rflags = false;
 
-    char* input; //the char and string will help keep track of files/directories
+    char* input; 
 
     string cinput = "";
 
-    vector <string> in; //this will contain all the files/directories the user inputs
+    vector <string> in; 
 
 
 
-    for(int i = 1; i < argc; i++) //gathers user input into a vector, starts at 1 so it does not include ./ls 
+    for(int i = 1; i < argc; i++) 
 
     {
 
@@ -734,15 +715,15 @@ int main(int argc, char *argv[])
 
 
 
-    int vsize = v.size(); //size of vector
+    int vsize = v.size(); 
 
     
 
-    for(int d = 0; d < vsize; d++) //time to check every element in the vector
+    for(int d = 0; d < vsize; d++) 
 
     {
 
-        if(strcmp(v.at(d), "-l") == 0) //if user has enetered -l
+        if(strcmp(v.at(d), "-l") == 0) 
 
         {
 
@@ -752,7 +733,7 @@ int main(int argc, char *argv[])
 
 
 
-        else if(strcmp(v.at(d), "-a") == 0) //-a
+        else if(strcmp(v.at(d), "-a") == 0) 
 
         {
 
@@ -762,7 +743,7 @@ int main(int argc, char *argv[])
 
 
 
-        else if(strcmp(v.at(d), "-R") == 0) //-R
+        else if(strcmp(v.at(d), "-R") == 0) 
 
         {
 
@@ -862,17 +843,14 @@ int main(int argc, char *argv[])
 
     int isize = in.size();
 
-    //previous part was checking for flags & file/directory, now we call the functions based on the user input
 
 
-
-    //no flags
 
     if(!lflags && !aflags && !rflags)
 
     {
 
-        if(isize>1)//if there is more than one file or directory
+        if(isize>1)
 
         {
 
@@ -904,13 +882,12 @@ int main(int argc, char *argv[])
 
 
 
-    //-l flag only
 
     if(lflags && !aflags && !rflags)
 
     {
 
-        if(isize>1)//if there is more than one file or directory
+        if(isize>1)
 
         {
 
@@ -944,13 +921,12 @@ int main(int argc, char *argv[])
 
 
 
-    //-rflag only
 
     if(rflags && !aflags && !lflags)
 
     {
 
-        if(isize>1)//if there is more than one file or directory
+        if(isize>1)
 
         {
 
@@ -982,13 +958,12 @@ int main(int argc, char *argv[])
 
 
 
-    //-a flag only
 
     if(aflags && !lflags && !rflags)
 
     {
 
-        if(isize>1)//if there is more than one file or directory
+        if(isize>1)
 
         {
 
