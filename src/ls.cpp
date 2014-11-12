@@ -571,7 +571,7 @@ int rflag(string dirName)
 
     {
 
-        cout << ".:" << endl;
+        cout << "." << endl;
 
     }
 
