@@ -95,7 +95,7 @@ int main(int argc, char** argv)
 	//char buf[BUFSIZ];
 	char* arguments[100];
 
-	char buf[1024] = {0};
+	//char buf[1024] = {0};
 
 	while(true) //loops the terminal so that you can enter different commands
 	{
