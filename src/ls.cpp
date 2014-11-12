@@ -22,7 +22,7 @@ using namespace std;
 
 
 
-void printtime(const struct stat &buf) //prints the time
+void printtime(const struct stat &buf)
 
 {
 
@@ -33,8 +33,6 @@ void printtime(const struct stat &buf) //prints the time
     char buffer[BUFSIZ]; 
 
 
-
-    strftime(buffer, BUFSIZ, "%b %d %R", tminfo);
 
     cout << buffer << " "; 
 
